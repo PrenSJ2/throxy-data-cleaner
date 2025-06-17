@@ -25,8 +25,10 @@ export async function processCsvToJsonAI(csvData: string): Promise<Company[]> {
   
   Instructions:
   - Infer missing or ambiguous headers where needed.
+  - Standardize the country to full english names (e.g., "United States" instead of "US") and infer from city if not provided.
   - Include the original unprocessed row data in the "raw_json" field.
   - Output only the resulting JSON — no explanations or extra text.
+  - Fix the domains, if empty leave it empty.
   `;
 
   const prompt = `CSV Data:\n${csvData}`;

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
+import path from 'path';
 import {processCsvToJsonAI} from "@/lib/openai";
 import {cleanCompany} from "@/lib/heuristics";
 import {addCompaniesToSupabase, getUniqueCompanies} from "@/lib/supabase";
@@ -20,8 +21,12 @@ export async function POST(request: Request) {
     }
 
     const arrayBuffer = await file.arrayBuffer();
-    const filePath = `@/public/uploads/${file.name}`;
+    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+    const filePath = path.join(uploadsDir, file.name);
+
+    await fs.promises.mkdir(uploadsDir, { recursive: true });
     await fs.promises.writeFile(filePath, Buffer.from(arrayBuffer));
+
     const csvData = Buffer.from(arrayBuffer).toString('utf-8');
 
     // initial ai sorting, in case of incorrect headers, split data in incorrect rows etc

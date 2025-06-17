@@ -26,22 +26,20 @@ async function getAllCompaniesFromSupabaseForDuplicationCheck(): Promise<{ compa
 }
 
 export async function getUniqueCompanies(cleanedCompanies: Company[]): Promise<Company[]> {
-    const uniqueCompanies = new Map();
-
-    // Fetch all companies from Supabase
     const supabaseCompanies = await getAllCompaniesFromSupabaseForDuplicationCheck();
 
-    // Combine Supabase companies and cleaned companies
-    const allCompanies = [...supabaseCompanies, ...cleanedCompanies];
+    // Create a set of keys for Supabase companies
+    const supabaseKeys = new Set(
+        supabaseCompanies.map(company => `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`)
+    );
 
-    allCompanies.forEach(company => {
+    // Filter out companies that already exist in Supabase
+    const uniqueCompanies = cleanedCompanies.filter(company => {
         const key = `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`;
-        if (!uniqueCompanies.has(key)) {
-            uniqueCompanies.set(key, company);
-        }
+        return !supabaseKeys.has(key);
     });
 
-    return Array.from(uniqueCompanies.values());
+    return uniqueCompanies;
 }
 
 export async function addCompaniesToSupabase(companies: Company[]): Promise<void> {

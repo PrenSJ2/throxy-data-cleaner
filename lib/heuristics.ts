@@ -1,16 +1,15 @@
-import fs from "fs";
 import { Company } from "@/lib/company.schema";
 
 function cleanCompanyName(name: string): string {
     if (!name) return "";
 
-    return name.trim().replace(/[\s.,\-–—:;]+$/, '');
+    return name.trim().replace(/\./g, '').replace(/,/g, ' ').replace(/[\s\-–—:;]+$/, '');
 }
 
 function cleanDomain(domain: string): string {
     if (!domain) return "";
 
-    return domain.trim().toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '');
+    return domain.trim().toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').replace(/\s+/g, '');
 }
 
 function normalizeEmployeeSize(employeeSize: string): number {
@@ -52,7 +51,7 @@ function setEmployeeSizeRange(employeeSize: string): string {
     if (normalizedSize <= 500) return "201‑500";
     if (normalizedSize <= 1000) return "501‑1000";
     if (normalizedSize <= 5000) return "1001‑5000";
-    if (normalizedSize <= 10000) return "5001‑10000";
+    if (normalizedSize <= 10000) return "5001‑1000";
     return "10000+";
 }
 
