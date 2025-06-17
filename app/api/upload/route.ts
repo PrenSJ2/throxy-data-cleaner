@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
+import {csvToCompany} from "@/lib/heuristics";
 
 export async function POST(request: Request) {
   try {
@@ -21,9 +22,13 @@ export async function POST(request: Request) {
 
     await fs.promises.writeFile(filePath, Buffer.from(arrayBuffer));
 
-    return NextResponse.json({ message: 'File uploaded successfully', path: filePath });
+    // Heuristic function to convert CSV to Company with some basic cleaning
+    const companies = csvToCompany(filePath);
+
+
+    return NextResponse.json({ message: 'File uploaded and converted successfully', data: companies });
   } catch (error) {
     console.error('Error handling file upload:', error);
-    return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to upload and convert file' }, { status: 500 });
   }
 }
