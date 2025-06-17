@@ -40,4 +40,36 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 1. init the nextjs project with shadcn and the Data Table component
 2. add the utils for superbase
-3. 
+
+
+## TODO
+- [ ] add shadcn, supabase, and nextjs
+- [ ] create database schema
+- [ ] create basic langchain flow
+- [ ] create a form to upload csv files
+- [ ] create a data table to show the cleaned data
+- [ ] add filters to the data table
+- [ ] create a sidebar with a list of projects
+- [ ] create a page to show the project details and the cleaned data
+- [ ] expose api endpoints
+- [ ] handle duplicates in uploads or rows
+
+
+## Data cleaning issues
+- data in correct columns
+- remove unnecessary punctuation in company names
+- remove spaces from domains and make lowercase
+- change country names from short to full english names
+- extra column / key `raw_json` to store the original row data
+
+
+## Langchain nodes
+- first node to 
+
+## Design
+- shadcn dashboard
+- in sidebar and homepage + button to form
+- form to upload csv for cleaning, form to contain dropzone and a couple inputs for project name
+- new project will then appear in the sidebar
+- when clicking on the project, it will open a new page with the project name and a data table showing the cleaned data
+- project data table should have 3 filters: country, employee_size and domain
