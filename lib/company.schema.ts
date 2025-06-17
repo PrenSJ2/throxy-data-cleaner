@@ -5,7 +5,7 @@ export interface Company {
   domain: string;
   city: string;
   country: string;
-  employee_size: number;
+  employee_size: string;
   raw_json: Record<string, any>;
 }
 

@@ -1,22 +1,54 @@
 import OpenAI from 'openai';
+import {Company} from "@/lib/company.schema";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function generateText(prompt: string, systemPrompt: string): Promise<string | null> {
+export async function processCsvToJsonAI(csvData: string): Promise<Company[]> {
+  const systemPrompt = `
+  You are a precise and helpful assistant.
+  
+  Your task is to convert CSV data into a JSON array of objects.
+  
+  Use the following schema for each object:
+  [
+    {
+      "company_name": "string",
+      "domain": "string",
+      "city": "string",
+      "country": "string",
+      "employee_size": string,
+      "raw_json": object  // original unprocessed data for reference
+    }
+  ]
+  
+  Instructions:
+  - Infer missing or ambiguous headers where needed.
+  - Include the original unprocessed row data in the "raw_json" field.
+  - Output only the resulting JSON — no explanations or extra text.
+  `;
+
+  const prompt = `CSV Data:\n${csvData}`;
+
   try {
     const completion = await client.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: prompt },
       ],
     });
-    return completion.choices[0].message.content;
+
+    const jsonResponse = completion.choices[0].message.content;
+
+    if (!jsonResponse) {
+      throw new Error('No response from OpenAI');
+    }
+
+    return JSON.parse(jsonResponse);
   } catch (error) {
-    console.error('Error generating text:', error);
+    console.error('Error processing CSV to JSON:', error);
     throw error;
   }
 }
-

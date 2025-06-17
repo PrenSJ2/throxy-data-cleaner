@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
-import {csvToCompany} from "@/lib/heuristics";
+import {processCsvToJsonAI} from "@/lib/openai";
+import {cleanCompany} from "@/lib/heuristics";
+import {addCompaniesToSupabase, getUniqueCompanies} from "@/lib/supabase";
 
 export async function POST(request: Request) {
   try {
@@ -19,12 +21,20 @@ export async function POST(request: Request) {
 
     const arrayBuffer = await file.arrayBuffer();
     const filePath = `@/public/uploads/${file.name}`;
-
     await fs.promises.writeFile(filePath, Buffer.from(arrayBuffer));
+    const csvData = Buffer.from(arrayBuffer).toString('utf-8');
 
-    // Heuristic function to convert CSV to Company with some basic cleaning
-    const companies = csvToCompany(filePath);
+    // initial ai sorting, in case of incorrect headers, split data in incorrect rows etc
+    const companies = await processCsvToJsonAI(csvData);
 
+    // heuristic cleaning of company data
+    const cleanedCompanies = cleanCompany(companies);
+
+    // duplication check and filtering
+    const uniqueCompanies = await getUniqueCompanies(cleanedCompanies);
+
+    // add companies to Supabase
+    await addCompaniesToSupabase(uniqueCompanies);
 
     return NextResponse.json({ message: 'File uploaded and converted successfully', data: companies });
   } catch (error) {

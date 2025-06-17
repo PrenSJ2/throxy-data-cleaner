@@ -63,9 +63,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - extra column / key `raw_json` to store the original row data
 
 
-## Langchain nodes
-- first node to 
-
 ## Design
 - shadcn dashboard
 - in sidebar and homepage + button to form

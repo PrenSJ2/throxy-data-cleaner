@@ -56,25 +56,15 @@ function setEmployeeSizeRange(employeeSize: string): string {
     return "10000+";
 }
 
-export function csvToCompany(filePath: string): Company[] {
-    const csvData = fs.readFileSync(filePath, 'utf-8');
-    const lines = csvData.split('\n').filter(line => line.trim() !== '');
-    const headers = lines[0].split(',');
-
-    return lines.slice(1).map(line => {
-        const values = line.split(',');
-        const raw_json = headers.reduce((acc, header, index) => {
-            acc[header.trim()] = values[index]?.trim();
-            return acc;
-        }, {} as Record<string, any>);
-
+export function cleanCompany(companies: Company[]): Company[] {
+    return companies.map(company => {
         return {
-            company_name: cleanCompanyName(raw_json.company_name || ''),
-            domain: cleanDomain(raw_json.domain || ''),
-            city: raw_json.city || '',
-            country: raw_json.country || '',
-            employee_size: setEmployeeSizeRange(raw_json.employee_size || ''),
-            raw_json,
+            company_name: cleanCompanyName(company.company_name || ''),
+            domain: cleanDomain(company.domain || ''),
+            city: company.city || '',
+            country: company.country || '',
+            employee_size: setEmployeeSizeRange(company.employee_size || ''),
+            raw_json: company.raw_json,
         };
     });
 }
