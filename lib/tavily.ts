@@ -9,7 +9,7 @@ export async function searchCompanyWebsite(companyName: string) {
     type: 'text',
     searchDepth: 'basic',
   });
-  return await extractInfoFromTavilyResponse('url', resp.results?.[0]?.content);
+  return await extractInfoFromTavilyResponse('url (i.e tesla.com)', resp.results?.[0]?.content);
 }
 
 export async function getCompanyStockTicker(companyName: string) {
