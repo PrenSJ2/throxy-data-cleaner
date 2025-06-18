@@ -1,18 +1,13 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import {
-  IconDashboard,
-  IconDatabase,
-  IconFileWord,
-  IconReport,
-} from "@tabler/icons-react"
+import * as React from 'react';
+import { IconDashboard } from '@tabler/icons-react';
 
-import Image from "next/image";
+import Image from 'next/image';
 
-import throxyLogo from "@/public/throxy_logo.jpeg";
+import throxyLogo from '@/public/throxy_logo.jpeg';
 
-import { NavMain } from "@/components/nav-main"
+import { NavMain } from '@/components/nav-main';
 import {
   Sidebar,
   SidebarContent,
@@ -20,17 +15,17 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
+      title: 'Dashboard',
+      url: '/dashboard',
       icon: IconDashboard,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -38,10 +33,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <a href="#">
                 <Image src={throxyLogo} alt="Throxy Logo" width={20} height={20} />
                 <span className="text-base font-semibold">Throxy | Data Cleaner</span>
@@ -54,5 +46,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-"use client";
-import { DataTable } from "@/components/data-table";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset } from "@/components/ui/sidebar";
+'use client';
+import { DataTable } from '@/components/data-table';
+import { SiteHeader } from '@/components/site-header';
+import { SidebarInset } from '@/components/ui/sidebar';
 
 export default function Home() {
   return (

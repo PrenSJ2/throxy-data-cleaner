@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import {processCsvToJsonAI} from "@/lib/openai";
-import {cleanCompany} from "@/lib/heuristics";
-import {addCompaniesToSupabase, getUniqueCompanies} from "@/lib/supabase";
-import {getCompanyDetails} from "@/lib/tavily";
+import { processCsvToJsonAI } from '@/lib/openai';
+import { cleanCompany } from '@/lib/heuristics';
+import { addCompaniesToSupabase, getUniqueCompanies } from '@/lib/supabase';
+import { getCompanyDetails } from '@/lib/tavily';
 
 export async function POST(request: Request) {
   try {
@@ -45,7 +45,10 @@ export async function POST(request: Request) {
     // add companies to Supabase
     await addCompaniesToSupabase(uniqueCompanies);
 
-    return NextResponse.json({ message: 'File uploaded and converted successfully', data: companies });
+    return NextResponse.json({
+      message: 'File uploaded and converted successfully',
+      data: companies,
+    });
   } catch (error) {
     console.error('Error handling file upload:', error);
     return NextResponse.json({ error: 'Failed to upload and convert file' }, { status: 500 });

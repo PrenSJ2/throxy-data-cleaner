@@ -48,9 +48,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const { data, error } = await supabase.from('companies').insert([
-      { company_name, domain, city, country, employee_size, raw_json },
-    ]);
+    const { data, error } = await supabase
+      .from('companies')
+      .insert([{ company_name, domain, city, country, employee_size, raw_json }]);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

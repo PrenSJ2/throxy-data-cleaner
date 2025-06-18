@@ -7,5 +7,5 @@ export interface Company {
   stock_ticker?: string;
   company_value?: string;
   ceo?: string;
-  raw_json: Record<string, any>;
+  raw_json: Record<string, never>;
 }

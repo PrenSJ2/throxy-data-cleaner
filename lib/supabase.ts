@@ -1,67 +1,70 @@
-import {createClient as createSupabaseClient} from '@supabase/supabase-js'
-import {Company} from "@/lib/company.schema";
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+import { Company } from '@/lib/company.schema';
 
 export function createClient() {
-  const supabaseUrl = process.env.SUPABASE_URL || 'https://xbahjpiptbklbcvtzfpe.supabase.co'
-  const supabaseKey = process.env.SUPABASE_KEY
+  const supabaseUrl = process.env.SUPABASE_URL || 'https://xbahjpiptbklbcvtzfpe.supabase.co';
+  const supabaseKey = process.env.SUPABASE_KEY;
   if (!supabaseKey) {
-    throw new Error('Supabase key is not defined. Please set the SUPABASE_KEY environment variable.')
+    throw new Error(
+      'Supabase key is not defined. Please set the SUPABASE_KEY environment variable.'
+    );
   }
   return createSupabaseClient(supabaseUrl, supabaseKey);
 }
 
-async function getAllCompaniesFromSupabaseForDuplicationCheck(): Promise<{ company_name: string; domain: string }[]> {
-    const client = createClient();
+async function getAllCompaniesFromSupabaseForDuplicationCheck(): Promise<
+  { company_name: string; domain: string }[]
+> {
+  const client = createClient();
 
-    const { data, error } = await client
-        .from('companies')
-        .select('company_name, domain');
+  const { data, error } = await client.from('companies').select('company_name, domain');
 
-    if (error) {
-        console.error('Error fetching companies from Supabase:', error);
-        throw new Error('Failed to fetch companies from Supabase');
-    }
+  if (error) {
+    console.error('Error fetching companies from Supabase:', error);
+    throw new Error('Failed to fetch companies from Supabase');
+  }
 
-    return data as { company_name: string; domain: string }[];
+  return data as { company_name: string; domain: string }[];
 }
 
 export async function getUniqueCompanies(cleanedCompanies: Company[]): Promise<Company[]> {
-    const supabaseCompanies = await getAllCompaniesFromSupabaseForDuplicationCheck();
+  const supabaseCompanies = await getAllCompaniesFromSupabaseForDuplicationCheck();
 
-    // Create a set of keys for Supabase companies
-    const supabaseKeys = new Set(
-        supabaseCompanies.map(company => `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`)
-    );
+  // Create a set of keys for Supabase companies
+  const supabaseKeys = new Set(
+    supabaseCompanies.map(
+      (company) => `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`
+    )
+  );
 
-    // Filter out companies that already exist in Supabase
-    const uniqueCompanies = cleanedCompanies.filter(company => {
-        const key = `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`;
-        return !supabaseKeys.has(key);
-    });
+  // Filter out companies that already exist in Supabase
+  const uniqueCompanies = cleanedCompanies.filter((company) => {
+    const key = `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`;
+    return !supabaseKeys.has(key);
+  });
 
-    return uniqueCompanies;
+  return uniqueCompanies;
 }
 
 export async function addCompaniesToSupabase(companies: Company[]): Promise<void> {
-    const client = createClient();
+  const client = createClient();
 
-    const { error } = await client
-        .from('companies')
-        .insert(companies.map(company => ({
-            company_name: company.company_name,
-            domain: company.domain,
-            city: company.city,
-            country: company.country,
-            employee_size: company.employee_size,
-            stock_ticker: company.stock_ticker?.slice(0, 20), // Truncate stock_ticker to 20 characters
-            company_value: company.company_value,
-            ceo: company.ceo,
-            raw_json: company.raw_json
-        })));
+  const { error } = await client.from('companies').insert(
+    companies.map((company) => ({
+      company_name: company.company_name,
+      domain: company.domain,
+      city: company.city,
+      country: company.country,
+      employee_size: company.employee_size,
+      stock_ticker: company.stock_ticker?.slice(0, 20), // Truncate stock_ticker to 20 characters
+      company_value: company.company_value,
+      ceo: company.ceo,
+      raw_json: company.raw_json,
+    }))
+  );
 
-    if (error) {
-        console.error('Error adding companies to Supabase:', error);
-        throw new Error('Failed to add companies to Supabase');
-    }
+  if (error) {
+    console.error('Error adding companies to Supabase:', error);
+    throw new Error('Failed to add companies to Supabase');
+  }
 }
-
