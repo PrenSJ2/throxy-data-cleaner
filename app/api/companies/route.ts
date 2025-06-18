@@ -13,6 +13,9 @@ export async function GET(req: NextRequest) {
     domain: params.get('domain') ?? undefined,
     city: params.get('city') ?? undefined,
     company_name: params.get('company_name') ?? undefined,
+    stock_ticker: params.get('stock_ticker') ?? undefined,
+    company_value: params.get('company_value') ?? undefined,
+    ceo: params.get('ceo') ?? undefined,
   };
 
   let query = supabase.from('companies').select('*');
