@@ -63,6 +63,15 @@ export default function Home() {
         const formData = new FormData();
         formData.append("file", files[0]);
 
+        await new Promise((resolve) => setTimeout(resolve, 12000));
+        setLoadingState("Searching for CEO...");
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setLoadingState("Searching for stock ticker...");
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        setLoadingState("Searching for company value...");
+
         await new Promise((resolve) => setTimeout(resolve, 10000));
         setLoadingState("Heuristic cleaning...");
 

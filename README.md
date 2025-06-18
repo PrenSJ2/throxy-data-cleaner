@@ -67,6 +67,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - shadcn dashboard
 - in sidebar and homepage + button to form
 - form to upload csv for cleaning, form to contain dropzone and a couple inputs for project name
-- new project will then appear in the sidebar
-- when clicking on the project, it will open a new page with the project name and a data table showing the cleaned data
-- project data table should have 3 filters: country, employee_size and domain
+- quick upload performs the cleaning and appending to the database
+- 

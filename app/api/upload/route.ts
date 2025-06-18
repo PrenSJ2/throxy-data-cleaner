@@ -4,6 +4,7 @@ import path from 'path';
 import {processCsvToJsonAI} from "@/lib/openai";
 import {cleanCompany} from "@/lib/heuristics";
 import {addCompaniesToSupabase, getUniqueCompanies} from "@/lib/supabase";
+import {getCompanyDetails} from "@/lib/tavily";
 
 export async function POST(request: Request) {
   try {
@@ -32,8 +33,11 @@ export async function POST(request: Request) {
     // initial ai sorting, in case of incorrect headers, split data in incorrect rows etc
     const companies = await processCsvToJsonAI(csvData);
 
+    // get extra company details with tavily
+    const companyWithDetails = await getCompanyDetails(companies);
+
     // heuristic cleaning of company data
-    const cleanedCompanies = cleanCompany(companies);
+    const cleanedCompanies = cleanCompany(companyWithDetails);
 
     // duplication check and filtering
     const uniqueCompanies = await getUniqueCompanies(cleanedCompanies);

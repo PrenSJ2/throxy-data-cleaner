@@ -53,6 +53,9 @@ export async function addCompaniesToSupabase(companies: Company[]): Promise<void
             city: company.city,
             country: company.country,
             employee_size: company.employee_size,
+            stock_ticker: company.stock_ticker,
+            company_value: company.company_value,
+            ceo: company.ceo,
             raw_json: company.raw_json
         })));
 

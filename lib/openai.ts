@@ -54,3 +54,29 @@ export async function processCsvToJsonAI(csvData: string): Promise<Company[]> {
     throw error;
   }
 }
+
+export async function extractInfoFromTavilyResponse(
+    searchField: string,
+    context: string
+): Promise<string> {
+    const prompt = `Extract the ${searchField} from the following context. Return only the value without any additional text or explanation.\n\nContext:\n${context}`;
+    const completion = await client.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+            { role: "system", content: "You are a highly accurate extraction assistant." },
+            { role: "user", content: prompt },
+        ],
+        temperature: 0,
+    });
+
+    const response = completion.choices?.[0]?.message?.content?.trim();
+
+    if (!response) {
+        console.error("No valid response received from OpenAI.");
+        console.error("Completion object:", completion);
+        throw new Error("No valid response received from OpenAI.");
+    }
+
+    return response;
+}
+

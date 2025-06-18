@@ -4,5 +4,8 @@ export interface Company {
   city: string;
   country: string;
   employee_size: string;
+  stock_ticker?: string;
+  company_value?: string;
+  ceo?: string;
   raw_json: Record<string, any>;
 }
