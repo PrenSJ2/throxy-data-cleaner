@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { processCsvToJsonAI } from '@/lib/openai';
 import { cleanCompany } from '@/lib/heuristics';
 import { addCompaniesToSupabase, getUniqueCompanies } from '@/lib/supabase';
@@ -22,12 +20,6 @@ export async function POST(request: Request) {
     }
 
     const arrayBuffer = await file.arrayBuffer();
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    const filePath = path.join(uploadsDir, file.name);
-
-    await fs.promises.mkdir(uploadsDir, { recursive: true });
-    await fs.promises.writeFile(filePath, Buffer.from(arrayBuffer));
-
     const csvData = Buffer.from(arrayBuffer).toString('utf-8');
 
     // initial ai sorting, in case of incorrect headers, split data in incorrect rows etc
@@ -46,11 +38,11 @@ export async function POST(request: Request) {
     await addCompaniesToSupabase(uniqueCompanies);
 
     return NextResponse.json({
-      message: 'File uploaded and converted successfully',
+      message: 'File processed successfully',
       data: companies,
     });
   } catch (error) {
     console.error('Error handling file upload:', error);
-    return NextResponse.json({ error: 'Failed to upload and convert file' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to process file' }, { status: 500 });
   }
 }
