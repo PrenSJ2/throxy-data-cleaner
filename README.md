@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Throxy Data Cleaning App
+By Sebastian Prentice
+This is a simple data cleaning app built with Next.js, Shadcn, and Supabase. It allows users to upload CSV files, clean the data, and view the cleaned data in a table format. The app also provides basic filtering and AI capabilities.
 
 ## Getting Started
 
@@ -16,10 +18,6 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -36,23 +34,19 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-## Design thinking
-
-1. init the nextjs project with shadcn and the Data Table component
-2. add the utils for superbase
-
+##$ Design thinking
 
 ## TODO
-- [ ] add shadcn, supabase, and nextjs
-- [ ] create database schema
-- [ ] create basic langchain flow
-- [ ] create a form to upload csv files
-- [ ] create a data table to show the cleaned data
-- [ ] add filters to the data table
-- [ ] create a sidebar with a list of projects
-- [ ] create a page to show the project details and the cleaned data
-- [ ] expose api endpoints
-- [ ] handle duplicates in uploads or rows
+- [X] add shadcn, supabase, and nextjs
+- [X] create database schema
+- [X] create basic langchain flow
+- [X] create a form to upload csv files
+- [X] create a data table to show the cleaned data
+- [X] add filters to the data table
+~~- [ ] create a sidebar with a list of projects~~
+- [X] create a page to show the ~~project details~~ dashboard and the cleaned data
+- [X] expose api endpoints
+- [X] handle duplicates in uploads or rows
 
 
 ## Data cleaning issues
@@ -64,8 +58,16 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## Design
-- shadcn dashboard
-- in sidebar and homepage + button to form
-- form to upload csv for cleaning, form to contain dropzone and a couple inputs for project name
-- quick upload performs the cleaning and appending to the database
-- 
+- main user flows: upload csv, view cleaned data, filter data
+- upload form with drag and drop - dropzone quick upload
+- dashboard with data table
+- data table with filters
+
+## Extras
+- tavily for search
+- search for ceo, company value, stock ticker
+
+
+## Future Improvements
+- better tool or search for stock tickers
+- fuzzy search for company names and domains

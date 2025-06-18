@@ -65,6 +65,7 @@ export function cleanCompany(companies: Company[]): Company[] {
             employee_size: setEmployeeSizeRange(company.employee_size || ''),
             stock_ticker: (company.stock_ticker || '').toUpperCase(),
             company_value: company.company_value ? `$${company.company_value} billion` : '',
+            ceo: company.ceo || '',
             raw_json: company.raw_json,
         };
     });
