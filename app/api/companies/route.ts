@@ -7,6 +7,11 @@ export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const params = url.searchParams;
 
+  // Define which fields should use fuzzy search vs exact match
+  const fuzzySearchFields = ['company_name', 'domain', 'city', 'country', 'ceo'];
+  // exact match ['employee_size', 'stock_ticker', 'company_value'];
+
+  // Create filter objects
   const filters: Record<string, string | undefined> = {
     country: params.get('country') ?? undefined,
     employee_size: params.get('employee_size') ?? undefined,
@@ -25,7 +30,13 @@ export async function GET(req: NextRequest) {
   if (hasFilters) {
     Object.entries(filters).forEach(([key, value]) => {
       if (value) {
-        query = query.eq(key, value);
+        // Apply fuzzy search for text fields
+        if (fuzzySearchFields.includes(key)) {
+          query = query.ilike(key, `%${value}%`);
+        } else {
+          // Apply exact match for numeric or specialized fields
+          query = query.eq(key, value);
+        }
       }
     });
   }
