@@ -275,47 +275,58 @@ export function DataTable() {
           </DropdownMenu>
         </div>
         <div className="flex items-center justify-end gap-2">
-          <Select
-            value={filters.country}
-            onValueChange={(value) =>
-              handleFilterChange("country", value === filters.country ? "" : value)
-            }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Country" />
-            </SelectTrigger>
-            <SelectContent>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                {filters.country || "Country"}
+                <IconChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
               {countryEntries.map((country) => (
-                <SelectItem key={country} value={country}>
+                <DropdownMenuCheckboxItem
+                  key={country}
+                  className="capitalize"
+                  checked={filters.country === country}
+                  onCheckedChange={() =>
+                    handleFilterChange("country", filters.country === country ? "" : country)
+                  }
+                >
                   {country}
-                </SelectItem>
+                </DropdownMenuCheckboxItem>
               ))}
-            </SelectContent>
-          </Select>
-          <Select
-            value={filters.employee_size}
-            onValueChange={(value) =>
-              handleFilterChange("employee_size", value === filters.employee_size ? "" : value)
-            }
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Employee Size" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1‑10">1‑10</SelectItem>
-              <SelectItem value="11‑50">11‑50</SelectItem>
-              <SelectItem value="51‑200">51‑200</SelectItem>
-              <SelectItem value="201‑500">201‑500</SelectItem>
-              <SelectItem value="501‑1000">501‑1000</SelectItem>
-              <SelectItem value="1001‑5000">1001‑5000</SelectItem>
-              <SelectItem value="5001‑10000">5001‑10000</SelectItem>
-            </SelectContent>
-          </Select>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                {filters.employee_size || "Employee Size"}
+                <IconChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              {["1‑10", "11‑50", "51‑200", "201‑500", "501‑1000", "1001‑5000", "5001‑10000"].map((size) => (
+                <DropdownMenuCheckboxItem
+                  key={size}
+                  className="capitalize"
+                  checked={filters.employee_size === size}
+                  onCheckedChange={() =>
+                    handleFilterChange("employee_size", filters.employee_size === size ? "" : size)
+                  }
+                >
+                  {size}
+                </DropdownMenuCheckboxItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Input
             type="text"
             placeholder="Domain"
             value={filters.domain}
             onChange={(e) => handleFilterChange("domain", e.target.value)}
+            className="h-8"
           />
         </div>
       </div>
