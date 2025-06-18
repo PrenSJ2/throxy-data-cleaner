@@ -1,6 +1,6 @@
 import { Company } from '@/lib/company.schema';
 
-function cleanCompanyName(name: string): string {
+export function cleanCompanyName(name: string): string {
   if (!name) return '';
 
   return name
@@ -10,7 +10,7 @@ function cleanCompanyName(name: string): string {
     .replace(/[\s\-–—:;]+$/, '');
 }
 
-function cleanDomain(domain: string): string {
+export function cleanDomain(domain: string): string {
   if (!domain) return '';
 
   return domain
@@ -64,6 +64,13 @@ function setEmployeeSizeRange(employeeSize: string): string {
   return '10000+';
 }
 
+function cleanCompanyValue(value: string | number): string {
+  if (!value) return '';
+  // Convert to string and remove all except digits and dot
+  const cleaned = String(value).replace(/[^0-9.]/g, '');
+  return cleaned ? `$${cleaned} billion` : '';
+}
+
 export function cleanCompany(companies: Company[]): Company[] {
   return companies.map((company) => {
     return {
@@ -73,7 +80,7 @@ export function cleanCompany(companies: Company[]): Company[] {
       country: company.country || '',
       employee_size: setEmployeeSizeRange(company.employee_size || ''),
       stock_ticker: (company.stock_ticker || '').toUpperCase(),
-      company_value: company.company_value ? `$${company.company_value} billion` : '',
+      company_value: cleanCompanyValue(company.company_value || ''),
       ceo: company.ceo || '',
       raw_json: company.raw_json,
     };

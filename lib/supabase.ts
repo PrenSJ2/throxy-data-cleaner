@@ -1,5 +1,6 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { Company } from '@/lib/company.schema';
+import { cleanCompanyName, cleanDomain } from '@/lib/heuristics';
 
 export function createClient() {
   const supabaseUrl = process.env.SUPABASE_URL || 'https://xbahjpiptbklbcvtzfpe.supabase.co';
@@ -16,30 +17,27 @@ async function getAllCompaniesFromSupabaseForDuplicationCheck(): Promise<
   { company_name: string; domain: string }[]
 > {
   const client = createClient();
-
   const { data, error } = await client.from('companies').select('company_name, domain');
-
   if (error) {
     console.error('Error fetching companies from Supabase:', error);
     throw new Error('Failed to fetch companies from Supabase');
   }
-
   return data as { company_name: string; domain: string }[];
 }
 
 export async function getUniqueCompanies(cleanedCompanies: Company[]): Promise<Company[]> {
   const supabaseCompanies = await getAllCompaniesFromSupabaseForDuplicationCheck();
 
-  // Create a set of keys for Supabase companies
+  // Normalize company_name and domain for deduplication
   const supabaseKeys = new Set(
     supabaseCompanies.map(
-      (company) => `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`
+      (company) =>
+        `${cleanCompanyName(company.company_name).toLowerCase()}|${cleanDomain(company.domain).toLowerCase()}`
     )
   );
 
-  // Filter out companies that already exist in Supabase
   const uniqueCompanies = cleanedCompanies.filter((company) => {
-    const key = `${company.company_name.toLowerCase()}|${company.domain.toLowerCase()}`;
+    const key = `${cleanCompanyName(company.company_name).toLowerCase()}|${cleanDomain(company.domain).toLowerCase()}`;
     return !supabaseKeys.has(key);
   });
 
