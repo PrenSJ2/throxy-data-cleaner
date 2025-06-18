@@ -2,7 +2,7 @@ import OpenAI from 'openai';
 import {Company} from "@/lib/company.schema";
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_KEY,
 });
 
 export async function processCsvToJsonAI(csvData: string): Promise<Company[]> {

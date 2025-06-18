@@ -18,23 +18,15 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+### Environment Variables
+```
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_key
+TAVILY_KEY=your_tavily_api_key
+OPENAI_KEY=your_openai_api_key
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-
-##$ Design thinking
+# Design thinking
 
 ## TODO
 - [X] add shadcn, supabase, and nextjs
@@ -62,6 +54,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - upload form with drag and drop - dropzone quick upload
 - dashboard with data table
 - data table with filters
+
+## Tradeoffs
+- using heuristics to clean data instead of a full AI model
+- separating uploads into different projects and so not having a single table for all data
+- using tavily for search instead of relying on OpenAI for all search queries
 
 ## Extras
 - tavily for search
