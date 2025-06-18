@@ -64,8 +64,7 @@ export function cleanCompany(companies: Company[]): Company[] {
             country: company.country || '',
             employee_size: setEmployeeSizeRange(company.employee_size || ''),
             stock_ticker: (company.stock_ticker || '').toUpperCase(),
-            company_value: company.company_value || '',
-            ceo: company.ceo || '',
+            company_value: company.company_value ? `$${company.company_value} billion` : '',
             raw_json: company.raw_json,
         };
     });
