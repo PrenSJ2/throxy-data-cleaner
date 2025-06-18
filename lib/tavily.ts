@@ -13,7 +13,7 @@ export async function searchCompanyWebsite(companyName: string) {
 }
 
 export async function getCompanyStockTicker(companyName: string) {
-  const resp = await tavilyClient.search(`${companyName} company stock ticker`, {
+  const resp = await tavilyClient.search(`${companyName} company stock ticker $`, {
     type: 'text',
     searchDepth: 'basic',
   });

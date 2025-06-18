@@ -79,7 +79,7 @@ export function cleanCompany(companies: Company[]): Company[] {
       city: company.city || '',
       country: company.country || '',
       employee_size: setEmployeeSizeRange(company.employee_size || ''),
-      stock_ticker: (company.stock_ticker || '').toUpperCase(),
+      stock_ticker: (company.stock_ticker || '').replace(/[^a-zA-Z]/g, '').toUpperCase(),
       company_value: cleanCompanyValue(company.company_value || ''),
       ceo: company.ceo || '',
       raw_json: company.raw_json,
