@@ -9,14 +9,14 @@ function cleanCompanyName(name: string): string {
 function cleanDomain(domain: string): string {
     if (!domain) return "";
 
-    return domain.trim().toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').replace(/\s+/g, '');
+    return domain.trim().toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').replace(/\s+/g, '').replace(/\/$/, '');
 }
 
 function normalizeEmployeeSize(employeeSize: string): number {
     const cleanedSize = employeeSize
-        .replace(/[,+~‑]/g, '') // Remove special characters
-        .replace(/\s/g, '') // Remove spaces
-        .replace(/[^0-9>]/g, ''); // Remove non-numeric characters except '>'
+        .replace(/[,+~‑]/g, '')
+        .replace(/\s/g, '')
+        .replace(/[^0-9>]/g, '');
 
     if (cleanedSize.includes('>')) {
         return parseInt(cleanedSize.replace('>', ''), 10) || 0;
@@ -24,7 +24,7 @@ function normalizeEmployeeSize(employeeSize: string): number {
 
     if (cleanedSize.includes('-')) {
         const [min, max] = cleanedSize.split('-').map(size => parseInt(size, 10));
-        return max || min || 0; // Return max if available, else min
+        return max || min || 0;
     }
 
     return parseInt(cleanedSize, 10) || 0;
@@ -63,6 +63,9 @@ export function cleanCompany(companies: Company[]): Company[] {
             city: company.city || '',
             country: company.country || '',
             employee_size: setEmployeeSizeRange(company.employee_size || ''),
+            stock_ticker: (company.stock_ticker || '').toUpperCase(),
+            company_value: company.company_value || '',
+            ceo: company.ceo || '',
             raw_json: company.raw_json,
         };
     });

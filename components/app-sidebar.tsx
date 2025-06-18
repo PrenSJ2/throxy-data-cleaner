@@ -12,7 +12,6 @@ import Image from "next/image";
 
 import throxyLogo from "@/public/throxy_logo.jpeg";
 
-import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
 import {
   Sidebar,
@@ -29,23 +28,6 @@ const data = {
       title: "Dashboard",
       url: "/dashboard",
       icon: IconDashboard,
-    },
-  ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: IconDatabase,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
     },
   ],
 }
@@ -70,7 +52,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
       </SidebarContent>
     </Sidebar>
   )

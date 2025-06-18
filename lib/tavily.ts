@@ -11,12 +11,12 @@ export async function searchCompanyWebsite(companyName: string) {
 
 export async function getCompanyStockTicker(companyName: string) {
     const resp = await tavilyClient.search(`${companyName} stock ticker`, { type: "text" });
-    return await extractInfoFromTavilyResponse("stock ticker", resp.results?.[0]?.content);
+    return await extractInfoFromTavilyResponse("stock ticker, (max 5 characters)", resp.results?.[0]?.content);
 }
 
 export async function getCompanyValue(companyName: string) {
     const resp = await tavilyClient.search(`${companyName} valuation`, { type: "text" });
-    return await extractInfoFromTavilyResponse("valuation", resp.results?.[0]?.content);
+    return await extractInfoFromTavilyResponse("valuation, (just number in dollars with no symbol or text)", resp.results?.[0]?.content);
 }
 
 export async function getCompanyCEO(companyName: string) {
@@ -24,10 +24,19 @@ export async function getCompanyCEO(companyName: string) {
     return await extractInfoFromTavilyResponse("CEO", resp.results?.[0]?.content);
 }
 
+export async function getCompanyEmployeeCount(companyName: string) {
+    const resp = await tavilyClient.search(`${companyName} number of employees`, { type: "text" });
+    return await extractInfoFromTavilyResponse("employee count", resp.results?.[0]?.content);
+}
+
 export async function getCompanyDetails(companies: Company[]) {
     return await Promise.all(companies.map(async (company) => {
         if (!company.domain) {
             company.domain = await searchCompanyWebsite(company.company_name) || "";
+        }
+        if (!company.employee_size) {
+            const employeeCount = await getCompanyEmployeeCount(company.company_name);
+            company.employee_size = employeeCount || "";
         }
 
         company.stock_ticker = await getCompanyStockTicker(company.company_name);

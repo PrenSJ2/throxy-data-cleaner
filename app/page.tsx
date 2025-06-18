@@ -38,12 +38,14 @@ import {
   FileUploaderContent,
   FileUploaderItem
 } from "@/components/ui/extensions/file-upload"
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({});
 
 export default function Home() {
   const [files, setFiles] = useState<File[] | null>(null);
   const [loadingState, setLoadingState] = useState<string | null>(null);
+  const router = useRouter();
 
   const dropZoneConfig = {
     maxFiles: 1,
@@ -89,6 +91,7 @@ export default function Home() {
             const result = await response.json();
             console.log(result);
             toast("File uploaded and processed successfully!");
+            router.push("/dashboard"); // Navigate to dashboard on success
           })
           .catch((error) => {
             console.error("Upload error", error);
