@@ -58,6 +58,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ error: err.message || 'Invalid request body' }, { status: 400 });
+    const error = err as Error;
+    return NextResponse.json({ error: error.message || 'Invalid request body' }, { status: 400 });
   }
 }
